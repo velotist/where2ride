@@ -36,10 +36,10 @@ export default function App() {
   /** App state */
   const [address, setAddress] = useState("");
   const [start, setStart] = useState<Coordinate>(null);
-  const [target, setTarget] = useState<Coordinate>(null);
+  const [destination, setDestination] = useState<Coordinate>(null);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
-  const [copiedTarget, setCopiedTarget] = useState(false);
+  const [copiedDestination, setCopiedDestination] = useState(false);
   const [copiedStart, setCopiedStart] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
@@ -75,7 +75,7 @@ export default function App() {
     apple,
     komoot,
     strava,
-  } = useRoutingUrls(start, target);
+  } = useRoutingUrls(start, destination);
   useEffect(() => {
     [
       googleRef.current,
@@ -116,8 +116,8 @@ export default function App() {
     setIsLocating(true);
     info("status.requestingLocation", langAtStart);
     setStart(null);
-    setTarget(null);
-    setCopiedTarget(false);
+    setDestination(null);
+    setCopiedDestination(false);
 
     if (!("geolocation" in navigator)) {
       setIsLocating(false);
@@ -152,8 +152,8 @@ export default function App() {
       setError("");
       info("status.lookingUpAddress", langAtStart);
       setStart(null);
-      setTarget(null);
-      setCopiedTarget(false);
+      setDestination(null);
+      setCopiedDestination(false);
 
       const q = address.trim();
       if (q.length < 3) {
@@ -183,7 +183,7 @@ export default function App() {
   const handleGenerate = useCallback(async () => {
     const langAtStart = i18n.language;
     setError("");
-    setCopiedTarget(false);
+    setCopiedDestination(false);
 
     if (!canGenerate) {
       const u = unit === "km" ? t("units.km") : t("units.mi");
@@ -202,8 +202,8 @@ export default function App() {
         : desiredKm;
       const g = randomDestination(start.lat, start.lon, effectiveKm);
       if (i18n.language !== langAtStart) return;
-      setTarget(g);
-      info("status.newTarget", langAtStart);
+      setDestination(g);
+      info("status.newDestination", langAtStart);
       setTimeout(() => resultRef.current?.focus?.(), 0);
     } finally {
       setIsGenerating(false);
@@ -221,24 +221,24 @@ export default function App() {
     i18n.language,
   ]);
 
-  const handleCopyTarget = useCallback(async () => {
+  const handleCopyDestination = useCallback(async () => {
     const langAtStart = i18n.language;
-    if (!target) return;
+    if (!destination) return;
     const text = `${formatCoordinateToSixDecimals(
-      target.lat
-    )},${formatCoordinateToSixDecimals(target.lon)}`;
+      destination.lat
+    )},${formatCoordinateToSixDecimals(destination.lon)}`;
     await copyText(
       text,
       () => {
         if (i18n.language !== langAtStart) return;
-        setCopiedTarget(true);
+        setCopiedDestination(true);
         setCopiedStart(false);
-        setStatus(t("status.copiedTarget"));
+        setStatus(t("status.copiedDestination"));
         setError("");
       },
       () => errMsg(t("error.copyFailed"), langAtStart)
     );
-  }, [target, t, errMsg, i18n.language]);
+  }, [destination, t, errMsg, i18n.language]);
 
   const handleCopyStart = useCallback(async () => {
     const langAtStart = i18n.language;
@@ -251,7 +251,7 @@ export default function App() {
       () => {
         if (i18n.language !== langAtStart) return;
         setCopiedStart(true);
-        setCopiedTarget(false);
+        setCopiedDestination(false);
         setStatus(t("status.copiedStart"));
         setError("");
       },
@@ -264,7 +264,7 @@ export default function App() {
     setStatus("");
     setError("");
     setCopiedStart(false);
-    setCopiedTarget(false);
+    setCopiedDestination(false);
   }, [i18n.language]);
 
   useEffect(() => {
@@ -540,7 +540,7 @@ export default function App() {
             </section>
           </section>
 
-          {/* STEP 3: Generate target */}
+          {/* STEP 3: Generate destination */}
           {start &&
             (() => {
               const title = t("labels.actionsGenerateTitle");
@@ -589,21 +589,21 @@ export default function App() {
               );
             })()}
 
-          {/* STEP 4: Target + Routing */}
-          <section className="section mt-8" aria-labelledby="target-label">
-            <h2 id="target-label" className="section-title mb-3">
+          {/* STEP 4: Destination + Routing */}
+          <section className="section mt-8" aria-labelledby="destination-label">
+            <h2 id="destination-label" className="section-title mb-3">
               <span className="badge-step">4</span>
-              {t("labels.targetSummary")}
+              {t("labels.destinationSummary")}
             </h2>
 
             <div
               tabIndex={-1}
               ref={resultRef}
               className="result-card"
-              aria-labelledby="target-label">
-              {!target ? (
+              aria-labelledby="destination-label">
+              {!destination ? (
                 <p className="text-sm text-gray-700">
-                  {t("labels.noTargetYet")}
+                  {t("labels.noDestinationYet")}
                 </p>
               ) : (
                 <>
@@ -611,19 +611,19 @@ export default function App() {
                     <div>
                       <div className="text-sm">{t("labels.latlon")}</div>
                       <div className="font-mono text-lg">
-                        {formatCoordinateToSixDecimals(target.lat)},{" "}
-                        {formatCoordinateToSixDecimals(target.lon)}
+                        {formatCoordinateToSixDecimals(destination.lat)},{" "}
+                        {formatCoordinateToSixDecimals(destination.lon)}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
-                        onClick={handleCopyTarget}
+                        onClick={handleCopyDestination}
                         className="h-11 rounded-xl border border-gray-300 px-3 text-sm font-medium hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                         aria-describedby="copy-status">
                         {t("labels.copy")}
                       </button>
-                      {copiedTarget && (
+                      {copiedDestination && (
                         <output
                           id="copy-status"
                           className="text-xs text-green-700"
@@ -636,34 +636,26 @@ export default function App() {
 
                   <div className="section-divider" />
 
-                  <div>
-                    <div className="text-sm text-gray-700 mb-2">
-                      {t("labels.routeWith")}{" "}
-                      <span className="sr-only">
-                        ({t("labels.bikeModeNote")})
-                      </span>
-                    </div>
-
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                     <fieldset
-                      className="mb-3"
                       role="group"
-                      aria-labelledby="routing-direct-title">
+                      aria-labelledby="routing-direct-title"
+                      className="rounded-2xl border border-gray-200 p-3 sm:p-4">
                       <h3 id="routing-direct-title" className="field-label">
                         {t("labels.routingGroupDirectTitle")}
                       </h3>
-                      <div className="mt-1 flex flex-wrap gap-2">
+                      <div className="mt-2 flex flex-wrap gap-2">
                         <a
                           ref={googleRef}
                           href={google()}
                           target="_blank"
                           rel="noopener noreferrer"
                           tabIndex={haveRoute ? 0 : -1}
-                          className={`h-10 inline-flex items-center rounded-xl border px-3 text-sm font-medium
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
-                           !haveRoute
-                             ? "opacity-50"
-                             : "hover:bg-white border-gray-300"
-                         }`}>
+                          className={`h-10 inline-flex items-center rounded-xl border px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
+                            !haveRoute
+                              ? "opacity-50"
+                              : "hover:bg-white border-gray-300"
+                          }`}>
                           {t("labels.mapsGoogle")}
                         </a>
                         <a
@@ -672,38 +664,38 @@ export default function App() {
                           target="_blank"
                           rel="noopener noreferrer"
                           tabIndex={haveRoute ? 0 : -1}
-                          className={`h-10 inline-flex items-center rounded-xl border px-3 text-sm font-medium
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
-                           !haveRoute
-                             ? "pointer-events-none opacity-50"
-                             : "hover:bg-white border-gray-300"
-                         }`}>
+                          className={`h-10 inline-flex items-center rounded-xl border px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
+                            !haveRoute
+                              ? "pointer-events-none opacity-50"
+                              : "hover:bg-white border-gray-300"
+                          }`}>
                           {t("labels.mapsApple")}
                         </a>
                       </div>
-                      <p className="hint-muted mt-2">
+                      <p className="hint-muted mt-3">
                         {t("labels.routingGroupDirectNote")}
                       </p>
                     </fieldset>
 
                     <fieldset
                       role="group"
-                      aria-labelledby="routing-manual-title">
+                      aria-labelledby="routing-manual-title"
+                      className="rounded-2xl border border-gray-200 p-3 sm:p-4">
                       <h3 id="routing-manual-title" className="field-label">
                         {t("labels.routingGroupManualTitle")}
                       </h3>
-                      <div className="mt-1 flex flex-wrap gap-2">
+                      <div className="mt-2 flex flex-wrap gap-2">
                         <a
                           ref={komootRef}
                           href={komoot()}
                           target="_blank"
+                          rel="noopener noreferrer"
                           tabIndex={haveRoute ? 0 : -1}
-                          className={`h-10 inline-flex items-center rounded-xl border px-3 text-sm font-medium
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
-                           !haveRoute
-                             ? "pointer-events-none opacity-50"
-                             : "hover:bg-white border-gray-300"
-                         }`}
+                          className={`h-10 inline-flex items-center rounded-xl border px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
+                            !haveRoute
+                              ? "pointer-events-none opacity-50"
+                              : "hover:bg-white border-gray-300"
+                          }`}
                           title={t("labels.bikeModeNote")}>
                           {t("labels.komoot")}
                         </a>
@@ -713,30 +705,27 @@ export default function App() {
                           target="_blank"
                           rel="noopener noreferrer"
                           tabIndex={haveRoute ? 0 : -1}
-                          className={`h-10 inline-flex items-center rounded-xl border px-3 text-sm font-medium
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
-                           !haveRoute
-                             ? "pointer-events-none opacity-50"
-                             : "hover:bg-white border-gray-300"
-                         }`}>
+                          className={`h-10 inline-flex items-center rounded-xl border px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
+                            !haveRoute
+                              ? "pointer-events-none opacity-50"
+                              : "hover:bg-white border-gray-300"
+                          }`}>
                           {t("labels.strava")}
                         </a>
                       </div>
-                      <ol className="list-inside list-decimal text-sm space-y-1 mt-2">
+                      <ol className="list-inside list-decimal text-sm space-y-1 mt-3">
                         <li>{t("labels.routingStepCopy")}</li>
                         <li>{t("labels.routingStepLogin")}</li>
                         <li>{t("labels.routingStepSetStart")}</li>
                         <li>{t("labels.routingStepPaste")}</li>
                       </ol>
-                      <p className="hint-muted mt-2">
+                      <p className="hint-muted mt-3">
                         {t("labels.routingManualNote")}
                       </p>
                     </fieldset>
-
-                    <p className="hint-muted mt-3">
-                      {t("labels.bikeModeNote")}
-                    </p>
                   </div>
+
+                  <p className="hint-muted mt-4">{t("labels.bikeModeNote")}</p>
                 </>
               )}
             </div>

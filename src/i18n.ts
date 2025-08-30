@@ -8,7 +8,7 @@ const resources = {
       units: { km: "km", mi: "miles", kilometer: "Kilometers", miles: "Miles" },
       labels: {
         helpButton: "Help",
-        radius: "Target distance as the crow flies to the location ({{unit}})",
+        radius: "Destination distance as the crow flies to the location ({{unit}})",
         radiusLive: "{{value}} {{unitLabel}}",
         radiusHelp: "Max {{max}} {{unit}}.",
         startPoint: "Get your location coordinates",
@@ -25,11 +25,11 @@ const resources = {
         latlon: "Latitude, Longitude",
         startNotSetHint:
           'Click on "Use my device location" or enter an address manually.',
-        targetSummary: "Your target coordinates",
-        noTargetYet: "No target yet.",
+        destinationSummary: "Your destination coordinates",
+        noDestinationYet: "No destination yet.",
         copy: "Copy",
         copied: "Copied",
-        actionsGenerate: "Generate random target",
+        actionsGenerate: "Generate random destination",
         helpTitle: "How it works",
         helpStep1: "Set radius: choose between {{range}}.",
         helpStep2: "Pick start: use your device location or enter an address.",
@@ -43,7 +43,7 @@ const resources = {
         routingGroupDirectTitle: "Open directly",
         routingGroupDirectNote:
           "Opens with a calculated route when you follow the link.",
-        routingGroupManualTitle: "Manual in Komoot and Strava",
+        routingGroupManualTitle: "Plan manually in Komoot or Strava",
         routingManualNote: "Direct routing is not available in these apps yet.",
         openIn: "Open in",
         mapsGoogle: "Google Maps",
@@ -57,12 +57,12 @@ const resources = {
           "Google Maps and Apple Maps open directly with a calculated route when you follow the link.",
         routingManualIntro:
           "Komoot, Garmin and Strava currently need a manual workflow:",
-        routingStepCopy: "Copy the target coordinates.",
+        routingStepCopy: "Copy the destination coordinates.",
         routingStepLogin: "Sign in to the application.",
         routingStepSetStart:
           "Set your current location as the start inside the app.",
         routingStepPaste:
-          "Paste the copied target coordinates into the destination field and start planning.",
+          "Paste the copied destination coordinates into the destination field and start planning.",
         routingLimitations:
           "Direct routing in these apps is not possible at the moment.",
         routingFutureFeature:
@@ -71,7 +71,7 @@ const resources = {
         correctionHint:
           "Straight-line distance is auto-adjusted so the planned route roughly matches your desired distance.",
         title: "So, how far do you want to go?",
-        actionsGenerateTitle: "Generate random target",
+        actionsGenerateTitle: "Generate random destination",
         actionsGenerateHint:
           "Creates a reachable point within your selected radius.",
         generate: "Generate",
@@ -82,7 +82,7 @@ const resources = {
           "Tapping a place on the map with closed eyes was still biased because I sensed the map’s direction.",
         about3: "Even spinning the device did not remove that bias.",
         about4:
-          "So this app lets you set a radius and lets the computer pick a random target inside it.",
+          "So this app lets you set a radius and lets the computer pick a random destination inside it.",
         about5:
           "Your chosen distance is a straight-line value; real routes differ because roads, surfaces, access and terrain matter.",
         about6:
@@ -94,9 +94,9 @@ const resources = {
         locationSet: "Location set from device.",
         lookingUpAddress: "Looking up address…",
         startFromAddress: "Start set from address.",
-        newTarget: "New target generated.",
+        newDestination: "New destination generated.",
         copiedStart: "Start coordinates copied to clipboard.",
-        copiedTarget: "Target coordinates copied to clipboard.",
+        copiedDestination: "Destination coordinates copied to clipboard.",
         closeModal: "Close modal",
         lang: {
           groupLabel: "Language switcher",
@@ -147,8 +147,8 @@ const resources = {
         latlon: "Breite, Länge",
         startNotSetHint:
           "Klicke auf „Gerätestandort verwenden“ oder gib eine Adresse ein.",
-        targetSummary: "Deine Ziel-Koordinaten",
-        noTargetYet: "Noch kein Ziel.",
+        destinationSummary: "Deine Ziel-Koordinaten",
+        noDestinationYet: "Noch kein Ziel.",
         copy: "Kopieren",
         copied: "Kopiert",
         actionsGenerate: "Zufälliges Ziel erzeugen",
@@ -166,7 +166,7 @@ const resources = {
         routingGroupDirectTitle: "Direkt öffnen",
         routingGroupDirectNote:
           "Öffnet mit berechneter Route, wenn du dem Link folgst.",
-        routingGroupManualTitle: "Manuell in Komoot und Strava",
+        routingGroupManualTitle: "Manuell in Komoot oder Strava planen",
         routingManualNote:
           "Eine direkte Routenberechnung ist dort derzeit nicht möglich.",
         openIn: "Öffnen in",
@@ -220,9 +220,9 @@ const resources = {
         locationSet: "Standort vom Gerät gesetzt.",
         lookingUpAddress: "Adresse wird gesucht…",
         startFromAddress: "Start aus Adresse gesetzt.",
-        newTarget: "Neues Ziel erzeugt.",
+        newDestination: "Neues Ziel erzeugt.",
         copiedStart: "Standort-Koordinaten in die Zwischenablage kopiert.",
-        copiedTarget: "Ziel-Koordinaten in die Zwischenablage kopiert.",
+        copiedDestination: "Ziel-Koordinaten in die Zwischenablage kopiert.",
         closeModal: "Modal schließen",
         lang: {
           groupLabel: "Sprachauswahl",
